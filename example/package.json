@@ -1,0 +1,20 @@
+{
+    "name": "@senacor/azure-function-middleware-openapi-generator-example",
+    "version": "1.0.0",
+    "description": "Example project for @senacor/azure-function-middleware-openapi-generator",
+    "scripts": {
+        "build": "tsc",
+        "start": "func start",
+        "generate": "node ../dist/index.js"
+    },
+    "license": "MIT",
+    "main": "dist/*function.js",
+    "devDependencies": {
+        "typescript": "5.7.2"
+    },
+    "dependencies": {
+        "@azure/functions": "4.6.0",
+        "@senacor/azure-function-middleware": "3.2.0",
+        "joi": "17.13.3"
+    }
+}

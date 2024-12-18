@@ -1,0 +1,29 @@
+{
+  "apiDefinitions": [
+    {
+      "title": "External API",
+      "description": "External API for the shop",
+      "servers": [
+        {
+          "url": "https://localhost:8080",
+          "description": "local server"
+        }
+      ],
+      "outputFile": "external.yaml",
+      "functionNameRegexToExclude": ["^internal-.*"],
+      "functionNameRegexToInclude": [".*"]
+    },
+    {
+      "title": "Internal API",
+      "description": "Internal API for the shop",
+      "servers": [
+        {
+          "url": "https://localhost:8080",
+          "description": "local server"
+        }
+      ],
+      "outputFile": "internal.json",
+      "functionNameRegexToInclude": ["^internal-.*"]
+    }
+  ]
+}

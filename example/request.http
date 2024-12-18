@@ -1,0 +1,29 @@
+### Call function get-orders-function
+GET http://localhost:8080/api/customer/616adad7-9f1b-4ab1-9f64-4a53945af3a2/order?status=active
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTZhZGFkNy05ZjFiLTRhYjEtOWY2NC00YTUzOTQ1YWYzYTIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.P6OBIGT6aG_LFcqh0swRfTJkPDH2lTQ08_i-HDcuqTI
+x-ms-client-principal-id: 42
+
+### Call function post-order-function
+POST http://localhost:8080/api/customer/616adad7-9f1b-4ab1-9f64-4a53945af3a2/order
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTZhZGFkNy05ZjFiLTRhYjEtOWY2NC00YTUzOTQ1YWYzYTIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.P6OBIGT6aG_LFcqh0swRfTJkPDH2lTQ08_i-HDcuqTI
+x-ms-client-principal-id: 42
+
+{
+  "status": "active",
+  "items": [
+    {
+      "id": "34f871d8-98d3-4c28-9cdc-0a02f4d21175",
+      "name": "Olives",
+      "price": 2.59
+    },
+    {
+      "id": "b9aa01de-a711-4b6d-8e6a-7da22adacfab",
+      "name": "Tomato",
+      "price": 3.99
+    }
+  ]
+}
+
+### Call function internal-get-order-function
+GET http://localhost:8080/api/order/6c1979c6-6968-4ca2-8795-2ea7aba3d94f
+x-functions-key: test-function-key
