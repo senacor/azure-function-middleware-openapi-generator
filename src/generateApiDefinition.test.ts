@@ -1,13 +1,13 @@
-import {generateApiDefinition} from "./generateApiDefinition";
-import {ApiDefinitionConfiguration} from "./Configuration";
-import {AppFunctions} from "./readAppFunctions";
-import Joi from "joi";
+import { generateApiDefinition } from './generateApiDefinition';
+import { ApiDefinitionConfiguration } from './Configuration';
+import { AppFunctions } from './readAppFunctions';
+import Joi from 'joi';
 
 describe('generateApiDefinition should', () => {
     const config: ApiDefinitionConfiguration = {
         title: 'Test API',
-        outputFile: 'test.yaml'
-    }
+        outputFile: 'test.yaml',
+    };
 
     test('generate api definition for http endpoint without validations', () => {
         const appFunctions: AppFunctions = {
@@ -18,14 +18,14 @@ describe('generateApiDefinition should', () => {
                         authLevel: 'function',
                         methods: ['GET'],
                         route: 'test/{id}',
-                        handler: async () => ({status: 200}),
+                        handler: async () => ({ status: 200 }),
                     },
                     validations: {
                         hasJwtAuthorization: false,
-                    }
-                }
-            ]
-        }
+                    },
+                },
+            ],
+        };
 
         const result = generateApiDefinition(config, appFunctions, '1.0.0');
 
@@ -41,17 +41,17 @@ describe('generateApiDefinition should', () => {
                         authLevel: 'function',
                         methods: ['GET'],
                         route: 'person/{personId}/order/{orderId}/item',
-                        handler: async () => ({status: 200}),
+                        handler: async () => ({ status: 200 }),
                     },
                     validations: {
                         hasJwtAuthorization: false,
                         requestQueryParamsSchema: Joi.object({
                             status: Joi.string().valid('active', 'expired').required(),
-                        })
-                    }
-                }
-            ]
-        }
+                        }),
+                    },
+                },
+            ],
+        };
 
         const result = generateApiDefinition(config, appFunctions, '1.0.0');
 
@@ -68,8 +68,10 @@ describe('generateApiDefinition should', () => {
                         methods: ['POST'],
                         route: 'person',
                         handler: async (req) => {
-                            const requestBody = await req.clone().json() as { name: string };
-                            return {status: 200, jsonBody: {name: requestBody.name}};
+                            const requestBody = (await req.clone().json()) as {
+                                name: string;
+                            };
+                            return { status: 200, jsonBody: { name: requestBody.name } };
                         },
                     },
                     validations: {
@@ -81,14 +83,14 @@ describe('generateApiDefinition should', () => {
                             200: Joi.object({
                                 name: Joi.string().required(),
                             }),
-                        }
-                    }
-                }
-            ]
-        }
+                        },
+                    },
+                },
+            ],
+        };
 
         const result = generateApiDefinition(config, appFunctions, '1.0.0');
 
         expect(result).toMatchSnapshot();
-    })
-})
+    });
+});

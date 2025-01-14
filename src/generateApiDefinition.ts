@@ -1,19 +1,27 @@
-import {ApiDefinitionConfiguration, Configuration} from "./Configuration";
-import {AppFunctions, HttpFunction} from "./readAppFunctions";
-import fs from "node:fs";
-import YAML from "yaml";
-import {OpenAPIV3} from 'openapi-types';
-import parse from "joi-to-json";
-import {AnySchema} from "joi";
+import { ApiDefinitionConfiguration, Configuration } from './Configuration';
+import { AppFunctions, HttpFunction } from './readAppFunctions';
+import fs from 'node:fs';
+import YAML from 'yaml';
+import { OpenAPIV3 } from 'openapi-types';
+import parse from 'joi-to-json';
+import { AnySchema } from 'joi';
 
-export function generateApiDefinitions(configuration: Configuration, appFunctions: AppFunctions, packageVersion: string) {
-    configuration.apiDefinitions.forEach(config => {
+export function generateApiDefinitions(
+    configuration: Configuration,
+    appFunctions: AppFunctions,
+    packageVersion: string,
+) {
+    configuration.apiDefinitions.forEach((config) => {
         const apiDefinition = generateApiDefinition(config, appFunctions, packageVersion);
         writeApiDefinition(config, apiDefinition);
     });
 }
 
-export function generateApiDefinition(config: ApiDefinitionConfiguration, appFunctions: AppFunctions, packageVersion: string): OpenAPIV3.Document {
+export function generateApiDefinition(
+    config: ApiDefinitionConfiguration,
+    appFunctions: AppFunctions,
+    packageVersion: string,
+): OpenAPIV3.Document {
     const apiDefinition: OpenAPIV3.Document = {
         openapi: '3.0.2',
         info: {
@@ -28,15 +36,15 @@ export function generateApiDefinition(config: ApiDefinitionConfiguration, appFun
                 FunctionKeyAuth: {
                     type: 'apiKey',
                     in: 'header',
-                    name: 'x-functions-key'
+                    name: 'x-functions-key',
                 },
                 BearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
-                    bearerFormat: 'JWT'
+                    bearerFormat: 'JWT',
                 },
-            }
-        }
+            },
+        },
     };
 
     appFunctions.httpFunctions
@@ -46,15 +54,18 @@ export function generateApiDefinition(config: ApiDefinitionConfiguration, appFun
             const fullRoute = `/${httpFunction.options.route}`;
             const operationObject: OpenAPIV3.OperationObject = {
                 operationId: httpFunction.name,
-                parameters: [...extractParametersFromRoute(fullRoute), ...generateQueryParametersDefinition(httpFunction)],
+                parameters: [
+                    ...extractParametersFromRoute(fullRoute),
+                    ...generateQueryParametersDefinition(httpFunction),
+                ],
                 requestBody: joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
                 responses: generateResponses(httpFunction),
                 security: generateSecurityForHttpFunction(httpFunction),
             };
 
             (httpFunction.options.methods ?? ['GET', 'POST'])
-                .filter(method => method !== 'CONNECT')
-                .map(method => OpenAPIV3.HttpMethods[method])
+                .filter((method) => method !== 'CONNECT')
+                .map((method) => OpenAPIV3.HttpMethods[method])
                 .forEach((method) => {
                     if (!apiDefinition.paths[fullRoute]) {
                         apiDefinition.paths[fullRoute] = {};
@@ -103,11 +114,11 @@ function generateSecurityForHttpFunction(httpFunction: HttpFunction): OpenAPIV3.
     const security = [];
 
     if (httpFunction.options.authLevel === 'function') {
-        security.push({FunctionKeyAuth: []});
+        security.push({ FunctionKeyAuth: [] });
     }
 
     if (httpFunction.validations.hasJwtAuthorization) {
-        security.push({BearerAuth: []})
+        security.push({ BearerAuth: [] });
     }
 
     return security;
@@ -128,7 +139,7 @@ function generateQueryParametersDefinition(httpFunction: HttpFunction): OpenAPIV
     const queryParams: OpenAPIV3.ParameterObject[] = [];
 
     Object.entries(queryOpenApiSchema.properties).forEach(([key, value]) => {
-        const {description, ...remainingSchema} = value as OpenAPIV3.NonArraySchemaObject;
+        const { description, ...remainingSchema } = value as OpenAPIV3.NonArraySchemaObject;
 
         queryParams.push({
             name: key,
@@ -136,8 +147,8 @@ function generateQueryParametersDefinition(httpFunction: HttpFunction): OpenAPIV
             required: queryOpenApiSchema.required?.includes(key) ?? false,
             description: description,
             schema: remainingSchema,
-        })
-    })
+        });
+    });
 
     return queryParams;
 }
@@ -148,7 +159,7 @@ function generateResponses(httpFunction: HttpFunction): OpenAPIV3.ResponsesObjec
             default: {
                 description: 'ok',
             },
-        }
+        };
     }
 
     const responses: OpenAPIV3.ResponsesObject = {};
@@ -159,18 +170,22 @@ function generateResponses(httpFunction: HttpFunction): OpenAPIV3.ResponsesObjec
                 description: `${status} response`,
                 content: {
                     'application/json': {
-                        schema: joiSchemaToOpenApi(schema)
-                    }
-                }
-            }
-        })
+                        schema: joiSchemaToOpenApi(schema),
+                    },
+                },
+            };
+        });
     }
 
     return responses;
 }
 
 function writeApiDefinition(config: ApiDefinitionConfiguration, apiDefinition: OpenAPIV3.Document) {
-    fs.writeFileSync(config.outputFile, config.outputFile.endsWith('.json') ? JSON.stringify(apiDefinition, null, 2) : YAML.stringify(apiDefinition), {
-        encoding: 'utf-8',
-    });
+    fs.writeFileSync(
+        config.outputFile,
+        config.outputFile.endsWith('.json') ? JSON.stringify(apiDefinition, null, 2) : YAML.stringify(apiDefinition),
+        {
+            encoding: 'utf-8',
+        },
+    );
 }

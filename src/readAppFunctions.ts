@@ -1,28 +1,28 @@
 import * as azureFunctions from '@azure/functions';
-import {HttpFunctionOptions} from '@azure/functions';
+import { HttpFunctionOptions } from '@azure/functions';
 import * as azureFunctionMiddleware from '@senacor/azure-function-middleware';
 import * as durableFunctions from 'durable-functions';
-import {glob} from "glob";
-import {AnySchema} from "joi";
-import path from "node:path";
-import proxyquire from "proxyquire";
+import { glob } from 'glob';
+import { AnySchema } from 'joi';
+import path from 'node:path';
+import proxyquire from 'proxyquire';
 
 export type AppFunctions = {
     httpFunctions: HttpFunction[];
-}
+};
 
 export type HttpFunction = {
     name: string;
     options: HttpFunctionOptions;
-    validations: HttpFunctionValidations
-}
+    validations: HttpFunctionValidations;
+};
 
 export type HttpFunctionValidations = {
     hasJwtAuthorization: boolean;
     requestBodySchema?: AnySchema;
     requestQueryParamsSchema?: AnySchema;
     responseBodySchema?: Record<number, AnySchema>;
-}
+};
 
 export function readAppFunctions(functionAppFilesPattern: string): AppFunctions {
     const httpFunctions: HttpFunction[] = [];
@@ -62,7 +62,7 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
             },
             '@azure/functions': {
                 ...azureFunctions,
-                app: azureAppMock
+                app: azureAppMock,
             },
             'durable-functions': {
                 ...durableFunctions,
@@ -73,19 +73,19 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
 
     return {
         httpFunctions,
-    }
+    };
 }
 
 type MiddlewareMock = {
-    beforeExecution: ExecutionFunctionMock[],
-    postExecution: ExecutionFunctionMock[],
-}
+    beforeExecution: ExecutionFunctionMock[];
+    postExecution: ExecutionFunctionMock[];
+};
 
 type ExecutionFunctionMock = {
-    type: 'jwtAuthorization' | 'requestBodyValidation' | 'requestQueryParamsValidation' | 'responseBodyValidation',
-    schema?: AnySchema,
-    schemaRecord?: Record<number, AnySchema>,
-}
+    type: 'jwtAuthorization' | 'requestBodyValidation' | 'requestQueryParamsValidation' | 'responseBodyValidation';
+    schema?: AnySchema;
+    schemaRecord?: Record<number, AnySchema>;
+};
 
 function middlewareMock(
     beforeExecution: ExecutionFunctionMock[],
@@ -95,12 +95,12 @@ function middlewareMock(
     return {
         beforeExecution,
         postExecution,
-    }
+    };
 }
 
 function jwtAuthorizationMock(): ExecutionFunctionMock {
     return {
-        type: 'jwtAuthorization'
+        type: 'jwtAuthorization',
     };
 }
 
@@ -108,30 +108,37 @@ function requestBodyValidationMock(schema: AnySchema): ExecutionFunctionMock {
     return {
         type: 'requestBodyValidation',
         schema,
-    }
+    };
 }
 
 function requestQueryParamsValidationMock(schema: AnySchema): ExecutionFunctionMock {
     return {
         type: 'requestQueryParamsValidation',
         schema,
-    }
+    };
 }
 
 function responseBodyValidationMock(schemaRecord: Record<number, AnySchema>): ExecutionFunctionMock {
     return {
         type: 'responseBodyValidation',
-        schemaRecord
-    }
+        schemaRecord,
+    };
 }
 
 function extractDataFromMiddleware(handler: MiddlewareMock): HttpFunctionValidations {
     return {
-        hasJwtAuthorization: handler.beforeExecution?.some((f: ExecutionFunctionMock) => f.type === 'jwtAuthorization') ?? false,
-        requestBodySchema: handler.beforeExecution?.find((f: ExecutionFunctionMock) => f.type === 'requestBodyValidation')?.schema,
-        requestQueryParamsSchema: handler.beforeExecution?.find((f: ExecutionFunctionMock) => f.type === 'requestQueryParamsValidation')?.schema,
-        responseBodySchema: handler.postExecution?.find((f: ExecutionFunctionMock) => f.type === 'responseBodyValidation')?.schemaRecord,
-    }
+        hasJwtAuthorization:
+            handler.beforeExecution?.some((f: ExecutionFunctionMock) => f.type === 'jwtAuthorization') ?? false,
+        requestBodySchema: handler.beforeExecution?.find(
+            (f: ExecutionFunctionMock) => f.type === 'requestBodyValidation',
+        )?.schema,
+        requestQueryParamsSchema: handler.beforeExecution?.find(
+            (f: ExecutionFunctionMock) => f.type === 'requestQueryParamsValidation',
+        )?.schema,
+        responseBodySchema: handler.postExecution?.find(
+            (f: ExecutionFunctionMock) => f.type === 'responseBodyValidation',
+        )?.schemaRecord,
+    };
 }
 
 function durableFunctionsAppMock() {
@@ -141,6 +148,6 @@ function durableFunctionsAppMock() {
         },
         orchestration: (name: string) => {
             console.log(`Found durable orchestration ${name}`);
-        }
-    }
+        },
+    };
 }

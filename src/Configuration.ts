@@ -1,8 +1,9 @@
-import {OpenAPIV3} from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types';
+import Joi from 'joi';
 
 export type Configuration = {
-    apiDefinitions: ApiDefinitionConfiguration[]
-}
+    apiDefinitions: ApiDefinitionConfiguration[];
+};
 
 export type ApiDefinitionConfiguration = {
     title: string;
@@ -10,5 +11,5 @@ export type ApiDefinitionConfiguration = {
     servers?: OpenAPIV3.ServerObject[];
     outputFile: string;
     functionNameRegexToInclude?: string[];
-    functionNameRegexToExclude?: string[]
-}
+    functionNameRegexToExclude?: string[];
+};
