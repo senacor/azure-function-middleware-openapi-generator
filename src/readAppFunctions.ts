@@ -33,7 +33,7 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
             httpFunctions.push({
                 name,
                 options,
-                validations: extractDataFromMiddleware(options.handler as unknown as MiddlewareMock),
+                validations: extractDataFromMiddleware(options.handler as unknown as MiddlewareFakeResult),
             });
         },
         activity: (name: string) => {
@@ -54,11 +54,11 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
         proxyquire(path.resolve(file), {
             '@senacor/azure-function-middleware': {
                 ...azureFunctionMiddleware,
-                middleware: middlewareMock,
-                jwtAuthorization: jwtAuthorizationMock,
-                requestBodyValidation: requestBodyValidationMock,
-                requestQueryParamsValidation: requestQueryParamsValidationMock,
-                responseBodyValidation: responseBodyValidationMock,
+                middleware: middlewareFake,
+                jwtAuthorization: jwtAuthorizationFake,
+                requestBodyValidation: requestBodyValidationFake,
+                requestQueryParamsValidation: requestQueryParamsValidationFake,
+                responseBodyValidation: responseBodyValidationFake,
             },
             '@azure/functions': {
                 ...azureFunctions,
@@ -66,7 +66,7 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
             },
             'durable-functions': {
                 ...durableFunctions,
-                app: durableFunctionsAppMock(),
+                app: durableFunctionsAppFake(),
             },
         });
     });
@@ -76,21 +76,21 @@ export function readAppFunctions(functionAppFilesPattern: string): AppFunctions 
     };
 }
 
-type MiddlewareMock = {
-    beforeExecution: ExecutionFunctionMock[];
-    postExecution: ExecutionFunctionMock[];
+type MiddlewareFakeResult = {
+    beforeExecution: ExecutionFunctionFakeResult[];
+    postExecution: ExecutionFunctionFakeResult[];
 };
 
-type ExecutionFunctionMock = {
+type ExecutionFunctionFakeResult = {
     type: 'jwtAuthorization' | 'requestBodyValidation' | 'requestQueryParamsValidation' | 'responseBodyValidation';
     schema?: AnySchema;
     schemaRecord?: Record<number, AnySchema>;
 };
 
-function middlewareMock(
-    beforeExecution: ExecutionFunctionMock[],
+function middlewareFake(
+    beforeExecution: ExecutionFunctionFakeResult[],
     handler: unknown,
-    postExecution: ExecutionFunctionMock[],
+    postExecution: ExecutionFunctionFakeResult[],
 ) {
     return {
         beforeExecution,
@@ -98,50 +98,50 @@ function middlewareMock(
     };
 }
 
-function jwtAuthorizationMock(): ExecutionFunctionMock {
+function jwtAuthorizationFake(): ExecutionFunctionFakeResult {
     return {
         type: 'jwtAuthorization',
     };
 }
 
-function requestBodyValidationMock(schema: AnySchema): ExecutionFunctionMock {
+function requestBodyValidationFake(schema: AnySchema): ExecutionFunctionFakeResult {
     return {
         type: 'requestBodyValidation',
         schema,
     };
 }
 
-function requestQueryParamsValidationMock(schema: AnySchema): ExecutionFunctionMock {
+function requestQueryParamsValidationFake(schema: AnySchema): ExecutionFunctionFakeResult {
     return {
         type: 'requestQueryParamsValidation',
         schema,
     };
 }
 
-function responseBodyValidationMock(schemaRecord: Record<number, AnySchema>): ExecutionFunctionMock {
+function responseBodyValidationFake(schemaRecord: Record<number, AnySchema>): ExecutionFunctionFakeResult {
     return {
         type: 'responseBodyValidation',
         schemaRecord,
     };
 }
 
-function extractDataFromMiddleware(handler: MiddlewareMock): HttpFunctionValidations {
+function extractDataFromMiddleware(handler: MiddlewareFakeResult): HttpFunctionValidations {
     return {
         hasJwtAuthorization:
-            handler.beforeExecution?.some((f: ExecutionFunctionMock) => f.type === 'jwtAuthorization') ?? false,
+            handler.beforeExecution?.some((f: ExecutionFunctionFakeResult) => f.type === 'jwtAuthorization') ?? false,
         requestBodySchema: handler.beforeExecution?.find(
-            (f: ExecutionFunctionMock) => f.type === 'requestBodyValidation',
+            (f: ExecutionFunctionFakeResult) => f.type === 'requestBodyValidation',
         )?.schema,
         requestQueryParamsSchema: handler.beforeExecution?.find(
-            (f: ExecutionFunctionMock) => f.type === 'requestQueryParamsValidation',
+            (f: ExecutionFunctionFakeResult) => f.type === 'requestQueryParamsValidation',
         )?.schema,
         responseBodySchema: handler.postExecution?.find(
-            (f: ExecutionFunctionMock) => f.type === 'responseBodyValidation',
+            (f: ExecutionFunctionFakeResult) => f.type === 'responseBodyValidation',
         )?.schemaRecord,
     };
 }
 
-function durableFunctionsAppMock() {
+function durableFunctionsAppFake() {
     return {
         activity: (name: string) => {
             console.log(`Found durable activity ${name}`);
