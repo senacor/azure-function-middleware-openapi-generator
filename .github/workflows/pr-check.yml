@@ -1,6 +1,7 @@
 name: pr-check
 on:
   pull_request:
+    branches: [ main ]
 
 jobs:
   pr-check:
