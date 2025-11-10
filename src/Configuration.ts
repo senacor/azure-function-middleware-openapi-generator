@@ -12,6 +12,8 @@ export type ApiDefinitionConfiguration = {
     outputFile: string;
     functionNameRegexToInclude?: string[];
     functionNameRegexToExclude?: string[];
+    excludeRequestBody?: boolean;
+    excludeResponseBody?: boolean;
 };
 
 const serverJoiSchema = Joi.object<OpenAPIV3.ServerObject>({
@@ -36,6 +38,8 @@ const apiDefinitionConfigurationJoiSchema = Joi.object<ApiDefinitionConfiguratio
         .required(),
     functionNameRegexToInclude: Joi.array().items(Joi.string()).optional(),
     functionNameRegexToExclude: Joi.array().items(Joi.string()).optional(),
+    excludeRequestBody: Joi.boolean().optional(),
+    excludeResponseBody: Joi.boolean().optional(),
 });
 
 export const configurationJoiSchema = Joi.object<Configuration>({

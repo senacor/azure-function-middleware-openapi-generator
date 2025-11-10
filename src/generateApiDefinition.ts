@@ -58,8 +58,10 @@ export function generateApiDefinition(
                     ...extractParametersFromRoute(fullRoute),
                     ...generateQueryParametersDefinition(httpFunction),
                 ],
-                requestBody: joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
-                responses: generateResponses(httpFunction),
+                requestBody: config.excludeRequestBody
+                    ? undefined
+                    : joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
+                responses: generateResponses(httpFunction, config.excludeResponseBody),
                 security: generateSecurityForHttpFunction(httpFunction),
             };
 
@@ -153,8 +155,8 @@ function generateQueryParametersDefinition(httpFunction: HttpFunction): OpenAPIV
     return queryParams;
 }
 
-function generateResponses(httpFunction: HttpFunction): OpenAPIV3.ResponsesObject {
-    if (!httpFunction.validations.responseBodySchema) {
+function generateResponses(httpFunction: HttpFunction, excludeResponseBody?: boolean): OpenAPIV3.ResponsesObject {
+    if (!httpFunction.validations.responseBodySchema || excludeResponseBody) {
         return {
             default: {
                 description: 'ok',

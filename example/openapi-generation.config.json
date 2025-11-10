@@ -24,6 +24,19 @@
       ],
       "outputFile": "internal.json",
       "functionNameRegexToInclude": ["^internal-.*"]
+    },
+    {
+      "title": "Full API without request and response body",
+      "description": "Full API without request and response body for the shop",
+      "servers": [
+        {
+          "url": "https://localhost:8080",
+          "description": "local server"
+        }
+      ],
+      "outputFile": "full_without_body.yaml",
+      "excludeRequestBody": true,
+      "excludeResponseBody": true
     }
   ]
 }
