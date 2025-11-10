@@ -26,6 +26,8 @@ describe('configurationJoiSchema should', () => {
                     outputFile: 'api.yaml',
                     functionNameRegexToInclude: ['^http-.*$'],
                     functionNameRegexToExclude: ['^http-internal-.*$'],
+                    excludeRequestBody: false,
+                    excludeResponseBody: false,
                 },
             ],
         });

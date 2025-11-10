@@ -7,7 +7,7 @@ describe('azure-function-middleware-openapi-generator', () => {
     });
 
     afterAll(() => {
-        execSync('rm example/external.yaml example/internal.json');
+        execSync('rm -f example/external.yaml example/internal.json example/full_without_body.yaml');
     });
 
     test('generate open api definition for example project internal api in json format', () => {
@@ -18,6 +18,12 @@ describe('azure-function-middleware-openapi-generator', () => {
 
     test('generate open api definition for example project external api in yaml format', () => {
         const file = fs.readFileSync('example/external.yaml').toString();
+
+        expect(file).toMatchSnapshot();
+    });
+
+    test('generate open api definition for example project for all endpoints and excludes request and response body', () => {
+        const file = fs.readFileSync('example/full_without_body.yaml').toString();
 
         expect(file).toMatchSnapshot();
     });

@@ -58,8 +58,12 @@ export function generateApiDefinition(
                     ...extractParametersFromRoute(fullRoute),
                     ...generateQueryParametersDefinition(httpFunction),
                 ],
-                requestBody: joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
-                responses: generateResponses(httpFunction),
+                requestBody: config.excludeRequestBody
+                    ? undefined
+                    : joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
+                responses: config.excludeResponseBody
+                    ? { default: { description: 'ok' } }
+                    : generateResponses(httpFunction),
                 security: generateSecurityForHttpFunction(httpFunction),
             };
 
