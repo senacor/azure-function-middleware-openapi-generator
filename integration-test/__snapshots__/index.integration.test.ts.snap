@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`azure-function-middleware-openapi-generator generate open api definition for example project external api in yaml format 1`] = `
 "openapi: 3.0.2
