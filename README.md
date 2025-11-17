@@ -50,6 +50,8 @@ Parameters for `ApiDefinitionConfiguration`:
 | outputFile                 | string                 | x        | Name of the generated file. Supported file extensions are `.json` and `.yaml` |
 | functionNameRegexToInclude | string[]               |          | List of regex patters to include http functions based on their name           |
 | functionNameRegexToExclude | string[]               |          | List of regex patters to exclude http functions based on their name           |
+| excludeRequestBody         | boolean                |          | Exclude the request body from the generated API definition                    |
+| excludeResponseBody        | boolean                |          | Exclude the response body from the generated API definition                   |
 
 Logic to include / exclude http functions:
 * If `functionNameRegexToInclude` and `functionNameRegexToExclude` are not specified all functions are used.

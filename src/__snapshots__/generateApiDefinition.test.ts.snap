@@ -72,6 +72,51 @@ exports[`generateApiDefinition should generate api definition for http endpoint 
 }
 `;
 
+exports[`generateApiDefinition should generate api definition for http endpoint with request and response body validation but exclude request and response body by config 1`] = `
+{
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http",
+      },
+      "FunctionKeyAuth": {
+        "in": "header",
+        "name": "x-functions-key",
+        "type": "apiKey",
+      },
+    },
+  },
+  "info": {
+    "description": undefined,
+    "title": "Test API",
+    "version": "1.0.0",
+  },
+  "openapi": "3.0.2",
+  "paths": {
+    "/person": {
+      "put": {
+        "operationId": "http-put-person",
+        "parameters": [],
+        "requestBody": undefined,
+        "responses": {
+          "default": {
+            "description": "ok",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+      },
+    },
+  },
+  "servers": undefined,
+}
+`;
+
 exports[`generateApiDefinition should generate api definition for http endpoint with url and query params 1`] = `
 {
   "components": {
