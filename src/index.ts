@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { readAppFunctions } from './readAppFunctions';
 import fs from 'node:fs';
 import { generateApiDefinitions } from './generateApiDefinition';

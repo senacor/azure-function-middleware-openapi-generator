@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.1.2
+* Make script executable via npx
+
 ## 0.1.1
 * Add config options `excludeRequestBody` and `excludeResponseBody`
 
