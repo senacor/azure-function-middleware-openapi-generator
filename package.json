@@ -1,6 +1,6 @@
 {
   "name": "@senacor/azure-function-middleware-openapi-generator",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "OpenAPI Generator for @senacor/azure-function-middleware",
   "main": "index/dist.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "openapi"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/index.js",
     "test": "jest",
     "test:integration": "jest --config jest.integration.config.js",
     "lint": "eslint ./src/**/*.ts ./example/src/**/*.ts ./integration-test/**/*.ts",
