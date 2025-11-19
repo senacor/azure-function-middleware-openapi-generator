@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.1.3
+* Make `index.js` executable
+
 ## 0.1.2
 * Make script executable via npx
 
