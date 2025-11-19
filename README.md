@@ -56,8 +56,8 @@ Parameters for `ApiDefinitionConfiguration`:
 Logic to include / exclude http functions:
 * If `functionNameRegexToInclude` and `functionNameRegexToExclude` are not specified all functions are used.
 * Otherwise:
-  * If the http function name matches some pattern from `functionNameRegexToExclude`, then the http function will be excluded from the api definition.
-  * If the http function name matches some pattern from `functionNameRegexToInclude`, then the http function will be included into the api definition.
+  * If `functionNameRegexToExclude` is defined and the http function name matches some pattern from `functionNameRegexToExclude`, then the http function will be excluded from the api definition.
+  * If `functionNameRegexToInclude` is defined and the http function name matches some pattern from `functionNameRegexToInclude`, then the http function will be included into the api definition.
 
 ## Supported Features
 * URL path parameters

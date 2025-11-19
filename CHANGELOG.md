@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.1.4
+* Fix `bin` entry in package.json
+* Improve logic to include and exclude http functions
+
 ## 0.1.3
 * Make `index.js` executable
 
