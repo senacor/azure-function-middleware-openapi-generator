@@ -87,11 +87,11 @@ function shouldIncludeHttpFunctionInApiDefinition(config: ApiDefinitionConfigura
         return true;
     }
 
-    if (config.functionNameRegexToExclude?.some((regex) => name.match(regex)) === true) {
+    if (config.functionNameRegexToExclude && config.functionNameRegexToExclude.some((regex) => name.match(regex))) {
         return false;
     }
 
-    return config.functionNameRegexToInclude?.some((regex) => name.match(regex)) === true;
+    return !config.functionNameRegexToInclude || config.functionNameRegexToInclude.some((regex) => name.match(regex));
 }
 
 function extractParametersFromRoute(route: string): OpenAPIV3.ParameterObject[] {
