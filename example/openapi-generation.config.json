@@ -34,7 +34,7 @@
           "description": "local server"
         }
       ],
-      "outputFile": "full_without_body.yaml",
+      "outputFile": "out/full_without_body.yaml",
       "excludeRequestBody": true,
       "excludeResponseBody": true
     }
