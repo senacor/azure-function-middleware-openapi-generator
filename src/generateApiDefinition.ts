@@ -5,6 +5,7 @@ import YAML from 'yaml';
 import { OpenAPIV3 } from 'openapi-types';
 import parse from 'joi-to-json';
 import { AnySchema } from 'joi';
+import { dirname } from 'node:path';
 
 export function generateApiDefinitions(
     configuration: Configuration,
@@ -185,6 +186,10 @@ function generateResponses(httpFunction: HttpFunction): OpenAPIV3.ResponsesObjec
 }
 
 function writeApiDefinition(config: ApiDefinitionConfiguration, apiDefinition: OpenAPIV3.Document) {
+    if (!fs.existsSync(dirname(config.outputFile))) {
+        fs.mkdirSync(dirname(config.outputFile), { recursive: true });
+    }
+
     fs.writeFileSync(
         config.outputFile,
         config.outputFile.endsWith('.json') ? JSON.stringify(apiDefinition, null, 2) : YAML.stringify(apiDefinition),

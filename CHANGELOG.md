@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.1.5
+* Create directory for output file if necessary
+
 ### 0.1.4
 * Fix `bin` entry in package.json
 * Improve logic to include and exclude http functions

@@ -1,6 +1,6 @@
 {
   "name": "@senacor/azure-function-middleware-openapi-generator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "OpenAPI Generator for @senacor/azure-function-middleware",
   "main": "index/dist.js",
   "types": "dist/index.d.ts",
