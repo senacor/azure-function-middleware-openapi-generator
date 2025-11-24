@@ -28,16 +28,22 @@ exports[`generateApiDefinition should generate api definition for http endpoint 
         "operationId": "http-post-person",
         "parameters": [],
         "requestBody": {
-          "additionalProperties": false,
-          "properties": {
-            "name": {
-              "type": "string",
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                  },
+                },
+                "required": [
+                  "name",
+                ],
+                "type": "object",
+              },
             },
           },
-          "required": [
-            "name",
-          ],
-          "type": "object",
         },
         "responses": {
           "200": {
