@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.1.6
+* Fix generated OpenAPI definition for request body
+
 ### 0.1.5
 * Create directory for output file if necessary
 

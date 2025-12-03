@@ -59,9 +59,7 @@ export function generateApiDefinition(
                     ...extractParametersFromRoute(fullRoute),
                     ...generateQueryParametersDefinition(httpFunction),
                 ],
-                requestBody: config.excludeRequestBody
-                    ? undefined
-                    : joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
+                requestBody: config.excludeRequestBody ? undefined : generateRequestBodyDefinition(httpFunction),
                 responses: config.excludeResponseBody
                     ? { default: { description: 'ok' } }
                     : generateResponses(httpFunction),
@@ -156,6 +154,20 @@ function generateQueryParametersDefinition(httpFunction: HttpFunction): OpenAPIV
     });
 
     return queryParams;
+}
+
+function generateRequestBodyDefinition(httpFunction: HttpFunction): OpenAPIV3.RequestBodyObject | undefined {
+    if (!httpFunction.validations.requestBodySchema) {
+        return undefined;
+    }
+
+    return {
+        content: {
+            'application/json': {
+                schema: joiSchemaToOpenApi(httpFunction.validations.requestBodySchema),
+            },
+        },
+    };
 }
 
 function generateResponses(httpFunction: HttpFunction): OpenAPIV3.ResponsesObject {
