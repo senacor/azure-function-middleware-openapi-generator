@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.2.0
+* Allow peer dependency `@senacor/azure-function-middleware` version `>=4.0.0`
+
 ### 0.1.6
 * Fix generated OpenAPI definition for request body
 
