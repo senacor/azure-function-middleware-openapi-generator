@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.2.1
+* Use trusted publishing (see: https://docs.npmjs.com/trusted-publishers)
+
 ### 0.2.0
 * Allow peer dependency `@senacor/azure-function-middleware` version `>=4.0.0`
 
