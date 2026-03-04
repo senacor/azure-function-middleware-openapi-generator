@@ -1,5 +1,8 @@
 # CHANGELOG
 
+### 0.3.0
+* Update to Node.js 22 and remove support for Node.js 20
+
 ### 0.2.1
 * Use trusted publishing (see: https://docs.npmjs.com/trusted-publishers)
 
