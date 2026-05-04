@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@azure/functions": "4.11.2",
-        "@senacor/azure-function-middleware": "3.2.0",
+        "@senacor/azure-function-middleware": "5.2.0",
         "joi": "17.13.3"
     }
 }
